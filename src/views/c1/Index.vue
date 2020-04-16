@@ -58,7 +58,7 @@ export default {
   },
   methods: {
     submit () {
-      console.log(this.fx)
+      // console.log(this.fx)
     },
     reset () {
       this.fx = this.matrix = ''
