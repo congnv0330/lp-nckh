@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen w-full flex flex-col bg-gray-100 px-5 md:px-20">
+  <div class="min-h-screen w-full flex flex-col bg-gray-100 px-5 xl:px-20">
     <main class="w-full py-5 my-auto">
       <router-view/>
     </main>

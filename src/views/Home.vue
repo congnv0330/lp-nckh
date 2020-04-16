@@ -8,11 +8,11 @@
       <template v-for="(item, index) in items">
         <div :key="index" class="bg-white rounded shadow-md">
           <div class="p-5">
-            <div class="font-semibold text-xl mb-1">{{ item.title }}</div>
-            <p class="text-gray-700 text-base mb-3">{{ item.description }}</p>
-            <button class="bg-blue-500 hover:bg-blue-700 focus:outline-none focus:shadow-outline text-white py-2 px-4 rounded">
+            <div class="font-semibold text-xl">{{ item.title }}</div>
+            <p class="text-gray-700 text-base mb-4">{{ item.description }}</p>
+            <router-link :to="{ name: 'c1' }" class="bg-blue-500 hover:bg-blue-700 focus:outline-none focus:shadow-outline text-white py-2 px-4 rounded">
               Xem &raquo;
-            </button>
+            </router-link>
           </div>
         </div>
       </template>
@@ -29,7 +29,7 @@ export default {
         {
           title: 'Chương 1',
           description: 'Bài toán quy hoạch tuyến tính',
-          route: ''
+          route: 'c1'
         },
         {
           title: 'Chương 2',
