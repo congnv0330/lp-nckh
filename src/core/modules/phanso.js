@@ -6,12 +6,17 @@ class PhanSo {
     this.mau = mau
   }
 
+  init () {
+    this.tu = 0
+    this.mau = 1
+  }
+
   get giatri () {
     return this.tu / this.mau
   }
 
-  rutGon () {
-    var ucln = UCLN(this.tu, this.mau)
+  RutGon () {
+    const ucln = UCLN(this.tu, this.mau)
     this.tu /= ucln
     this.mau /= ucln
   }
