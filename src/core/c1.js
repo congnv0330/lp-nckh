@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 
 import PhanSo from './modules/phanso'
+import { decimalToFraction } from './utils/fraction'
 
 const hsM = []
 const pa = []
@@ -274,11 +275,11 @@ function Savesol (hs) {
       }
 
       tmp.push(hs[i] + 1)
-      tmp.push(pa[i].giatri)
+      tmp.push(decimalToFraction(pa[i].giatri))
     }
 
     for (let j = 0; j < n; j++) {
-      tmp.push(rb[i][j].giatri)
+      tmp.push(decimalToFraction(rb[i][j].giatri))
     }
     res.push(tmp)
   }
@@ -327,7 +328,7 @@ function processing (paramFx, paramMatrix, paramRB, paramFxType) {
   const allS = []
   let s = ''
   const mp = []
-  const res = { nLine: m, step: [], answer: {} }
+  const res = { nX: n, nLine: m, steps: [], answer: {} }
   for (const x in hs) {
     s = s + hs[x].toString()
   }
@@ -341,7 +342,7 @@ function processing (paramFx, paramMatrix, paramRB, paramFxType) {
       res.answer = failed
       return res
     } else if (checkDeltaNow === 1) {
-      res.step = allS
+      res.steps = allS
       res.answer = print(hs, paramFxType)
       return res
     }

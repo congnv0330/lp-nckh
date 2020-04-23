@@ -9,10 +9,10 @@
             F(x)
           </label>
           <div class="flex-1 mx-2">
-            <input id="fx" type="text" v-model="fx" title="Phương trình F(x)" class="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-blue-500 focus:shadow">
+            <input id="fx" type="text" v-model="input.fx" title="Phương trình F(x)" class="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-blue-500 focus:shadow">
           </div>
           <div class="relative">
-            <select v-model="type" title="Bài toán" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-400 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:border-blue-500 focus:shadow">
+            <select v-model="input.type" title="Bài toán" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-400 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:border-blue-500 focus:shadow">
               <option value="min">Min</option>
               <option value="max">Max</option>
             </select>
@@ -21,13 +21,13 @@
             </div>
           </div>
         </div>
-        <textarea v-model="matrix" title="Ma trận" class="block appearance-none border border-gray-400 rounded w-full text-gray-700 py-2 px-3 focus:outline-none focus:border-blue-500 focus:shadow mb-4" rows="4"></textarea>
+        <textarea v-model="input.matrix" title="Ma trận" class="block appearance-none border border-gray-400 rounded w-full text-gray-700 py-2 px-3 focus:outline-none focus:border-blue-500 focus:shadow mb-4" rows="4"></textarea>
         <div class="flex mb-4">
           <label class="text-gray-700 font-bold my-auto mr-2" for="fxRB">
             Rằng buộc
           </label>
           <div class="flex-1">
-            <input id="fxRB" type="text" v-model="fxRB" title="Rằng buộc ..." class="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-blue-500 focus:shadow">
+            <input id="fxRB" type="text" v-model="input.fxRB" title="Rằng buộc ..." class="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-blue-500 focus:shadow">
           </div>
         </div>
         <div class="text-center md:text-left">
@@ -40,14 +40,48 @@
         </div>
       </div>
       <div v-if="hasSubmit" class="bg-white shadow-md p-5 lg:col-span-2">
-
+        <div class="overflow-auto">
+          <table :key="index" class="table-auto text-center">
+              <thead>
+                <tr>
+                  <th class="border px-4 py-2">Hệ số Ci</th>
+                  <th class="border px-4 py-2">Ẩn cơ sở</th>
+                  <th class="border px-4 py-2">Phương án</th>
+                  <template v-for="x in output.nX">
+                    <th class="border px-4 py-2" :key="x">x{{ x }}</th>
+                  </template>
+                </tr>
+              </thead>
+              <template v-for="(step, index) in output.steps">
+                  <tbody :key="index" class="border">
+                    <template v-for="(row, i) in step">
+                      <tr :key="i">
+                        <template v-if="i < output.nLine">
+                          <template v-for="val in row">
+                            <td class="border-l border-r px-4 py-2" :key="val">{{ val }}</td>
+                          </template>
+                        </template>
+                        <template v-else>
+                            <td class="border px-4 py-2"></td>
+                            <td class="border px-4 py-2"></td>
+                            <td class="border px-4 py-2"></td>
+                            <template v-for="val in row">
+                              <td class="border px-4 py-2" :key="val">{{ val }}</td>
+                            </template>
+                        </template>
+                      </tr>
+                    </template>
+                  </tbody>
+              </template>
+          </table>
+        </div>
       </div>
     </div>
     <div class="text-center md:text-left">
-      <router-link class="align-baseline font-bold text-sm text-gray-400 hover:text-gray-700 mr-5" :to="{ name: 'home' }">
+      <router-link class="align-baseline font-bold text-sm text-gray-500 hover:text-gray-700 mr-5" :to="{ name: 'home' }">
         &larr; Về trang chủ
       </router-link>
-      <router-link class="align-baseline font-bold text-sm text-blue-400 hover:text-blue-700" :to="{ name: 'home' }">
+      <router-link class="align-baseline font-bold text-sm text-blue-500 hover:text-blue-700" :to="{ name: 'home' }">
         Chương kế &rarr;
       </router-link>
     </div>
@@ -55,26 +89,35 @@
 </template>
 
 <script>
-// import c1 from '@/core/c1'
+import c1 from '@/core/c1'
 
 export default {
   name: 'C1Index',
   data () {
     return {
-      fx: '1 -1 -3',
-      matrix: '2 -1 1 <= 1\n4 -2 1 >= -2\n3 0 1 <= 5',
-      fxRB: '1 2 3 >= 0',
-      type: 'min',
-      hasSubmit: false
+      input: {
+        fx: '1 -1 -3',
+        matrix: '2 -1 1 <= 1\n4 -2 1 >= -2\n3 0 1 <= 5',
+        fxRB: '1 2 3 >= 0',
+        type: 'min'
+      },
+      hasSubmit: false,
+      output: {}
     }
   },
   methods: {
     submit () {
-      // console.log(c1(this.fx, this.matrix, this.fxRB, this.type))
+      if (this.input.fx.trim() !== '' && this.input.matrix.trim() !== '' && this.input.fxRB.trim() !== '') {
+        this.hasSubmit = true
+        this.output = c1(this.input.fx, this.input.matrix, this.input.fxRB, this.input.type)
+        // console.log(this.output)
+      } else {
+        // console.log('Không đủ dữ kiện đầu vào!')
+      }
     },
     reset () {
-      this.fx = this.matrix = this.fxRB = ''
-      this.type = 'min'
+      this.input.fx = this.input.matrix = this.input.fxRB = ''
+      this.input.type = 'min'
     }
   }
 }
