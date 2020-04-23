@@ -20,6 +20,22 @@ class PhanSo {
     this.tu /= ucln
     this.mau /= ucln
   }
+
+  get Xuat () {
+    let s = ''
+    if (this.tu / this.mau === 0) {
+      return '0'
+    }
+
+    if (this.tu / this.mau < 0) {
+      s += '-'
+    }
+    s += (Math.abs(this.tu)).toString()
+    if (this.mau !== 1) {
+      s += '/' + (Math.abs(this.mau)).toString()
+    }
+    return s
+  }
 }
 
 export default PhanSo
