@@ -35,7 +35,7 @@ function Multi (p1, p2) { const mul = new PhanSo(); mul.tu = p1.tu * p2.tu; mul.
 function Div (p1, p2) { const div = new PhanSo(); div.tu = p1.tu * p2.mau; div.mau = p1.mau * p2.tu; div.RutGon(); return div }
 
 function input (inputFx, inputMatrix, inputRB, fxType) {
-  let orgin = new LinearProgramming()
+  const orgin = new LinearProgramming()
   const fxString = inputFx.trim()
   const fxOrgin = fxString.split(' ')
   for (let i = 0; i < fxOrgin.length; i++) {
@@ -54,7 +54,7 @@ function input (inputFx, inputMatrix, inputRB, fxType) {
   orgin.m = matrixArr.length
   let maxLine = 0
 
-  const RBin = inputRB.trim()
+  let RBin = inputRB.trim()
   RBin = RBin.split(';')
   for (let i = 0; i < RBin.length; i++) {
     RBin[i] = RBin[i].trim()
@@ -136,7 +136,7 @@ function setMatrix (lp) {
     if (check === 1) { before += 1 }
   }
   rb.n = rb.n + before
-  if (rb.type === 'Max') {
+  if (rb.type === 'max') {
     for (let i = 0; i < rb.n; i++) {
       rb.fx[i].tu *= -1
     }
@@ -299,11 +299,13 @@ function Savesol (hs, lp) {
       }
 
       tmp.push(hs[i] + 1)
-      tmp.push(lp.pa[i].tu.toString() + lp.pa[i].mau.toString)
+      // tmp.push(lp.pa[i].tu.toString() + '/' + lp.pa[i].mau.toString())
+      tmp.push(lp.pa[i].Xuat)
     }
 
     for (let j = 0; j < lp.n; j++) {
-      tmp.push(lp.rb[i][j].tu.toString() + lp.rb[i][j].mau.toString())
+      // tmp.push(lp.rb[i][j].tu.toString() + '/' + lp.rb[i][j].mau.toString())
+      tmp.push(lp.rb[i][j].Xuat)
     }
     res.push(tmp)
   }
@@ -344,11 +346,12 @@ function print (hs, fxType, lp) {
       pa_result = Sum(pa_result, Multi(lp.fx[lp.freeVar[i]], x[lp.freeVar[i]]))
     }
   }
-  res.result.fx = pa_result.tu.toString() + '/' + pa_result.mau.toString()
-
+  // res.result.fx = pa_result.tu.toString() + '/' + pa_result.mau.toString()
+  res.result.fx = pa_result.Xuat
   // let s = pa_result.tu.toString() + '/' + pa_result.mau.toString() + '<br>'
   for (let i = 0; i < lp.n; i++) {
-    res.result.x.push(x[i].tu.toString() + '/' + x[i].mau.toString())
+    // res.result.x.push(x[i].tu.toString() + '/' + x[i].mau.toString())
+    res.result.x.push(x[i].Xuat)
     // s = s + x[i].tu.toString() + '/' + x[i].mau.toString() + ' '
   }
   return res
@@ -376,7 +379,7 @@ function processing (paramFx, paramMatrix, paramRB, paramFxType) {
       return res
     } else if (checkDeltaNow === 1) {
       res.steps = allS
-      res.answer = print(hs, paramFxType)
+      res.answer = print(hs, paramFxType, rb)
       return res
     }
 
