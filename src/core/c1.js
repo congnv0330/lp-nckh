@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 
 import PhanSo from './modules/phanso'
-import { decimalToFraction } from './utils/fraction'
+// import { decimalToFraction } from './utils/fraction'
 
 class LinearProgramming {
   constructor () {
@@ -35,7 +35,7 @@ function Multi (p1, p2) { const mul = new PhanSo(); mul.tu = p1.tu * p2.tu; mul.
 function Div (p1, p2) { const div = new PhanSo(); div.tu = p1.tu * p2.mau; div.mau = p1.mau * p2.tu; div.RutGon(); return div }
 
 function input (inputFx, inputMatrix, inputRB, fxType) {
-  const orgin = new LinearProgramming()
+  let orgin = new LinearProgramming()
   const fxString = inputFx.trim()
   const fxOrgin = fxString.split(' ')
   for (let i = 0; i < fxOrgin.length; i++) {
@@ -54,7 +54,7 @@ function input (inputFx, inputMatrix, inputRB, fxType) {
   orgin.m = matrixArr.length
   let maxLine = 0
 
-  let RBin = inputRB.trim()
+  const RBin = inputRB.trim()
   RBin = RBin.split(';')
   for (let i = 0; i < RBin.length; i++) {
     RBin[i] = RBin[i].trim()
@@ -170,15 +170,15 @@ function calculateDelta (rb, hs) {
   for (let i = 0; i < rb.n; i++) {
     let hs_M = new PhanSo(); let cons = new PhanSo()
     for (let j = 0; j < rb.m; j++) {
-      if (rb.fx[hs[j]].giatri != 99999999) {
+      if (rb.fx[hs[j]].giatri !== 99999999) {
         cons = Sum(cons, Multi(rb.fx[hs[j]], rb.rb[j][i]))
       } else {
         hs_M = Sum(hs_M, rb.rb[j][i])
       }
     }
-    rb.rb[rb.m][i] = rb.fx[i].giatri != 99999999 ? Sub(cons, rb.fx[i]) : cons
+    rb.rb[rb.m][i] = rb.fx[i].giatri !== 99999999 ? Sub(cons, rb.fx[i]) : cons
     const hs_M1 = new PhanSo(1)
-    rb.hsM[i] = rb.fx[i].giatri != 99999999 ? hs_M : Sub(hs_M, hs_M1)
+    rb.hsM[i] = rb.fx[i].giatri !== 99999999 ? hs_M : Sub(hs_M, hs_M1)
     if (rb.hsM[i].giatri > rb.hsM[posOfMaxDelta].giatri || (rb.hsM[i].giatri === rb.hsM[posOfMaxDelta].giatri && rb.rb[rb.m][posOfMaxDelta].giatri < rb.rb[rb.m][i].giatri)) {
       posOfMaxDelta = i
     }
@@ -341,7 +341,7 @@ function print (hs, fxType, lp) {
 
   if (lp.freeVar.length !== 0) {
     for (let i = 0; i < lp.freeVar.length; i++) {
-      pa_result = Sum(pa_result, Multi(lp.fx[freeVar[i]], x[freeVar[i]]))
+      pa_result = Sum(pa_result, Multi(lp.fx[lp.freeVar[i]], x[lp.freeVar[i]]))
     }
   }
   res.result.fx = pa_result.tu.toString() + '/' + pa_result.mau.toString()
@@ -356,12 +356,12 @@ function print (hs, fxType, lp) {
 
 function processing (paramFx, paramMatrix, paramRB, paramFxType) {
   let rb = input(paramFx, paramMatrix, paramRB, paramFxType)
-  rb =  setMatrix(rb)
+  rb = setMatrix(rb)
   const hs = addBase(rb)
   const allS = []
   let s = ''
   const mp = []
-  const res = { nX: n, nLine: m, steps: [], answer: {} }
+  const res = { nX: rb.n, nLine: rb.m, steps: [], answer: {} }
   for (const x in hs) {
     s = s + hs[x].toString()
   }
@@ -369,7 +369,7 @@ function processing (paramFx, paramMatrix, paramRB, paramFxType) {
   mp[s] += 1
   while (true) {
     let posOfMaxDelta = calculateDelta(rb, hs)
-    allS.push(Savesol(hs, lp))
+    allS.push(Savesol(hs, rb))
     const checkDeltaNow = checkDelta(rb)
     if (checkDeltaNow === 0) {
       res.answer = failed
@@ -391,7 +391,7 @@ function processing (paramFx, paramMatrix, paramRB, paramFxType) {
     if (mp[s] !== 1) {
       posOfMaxDelta = 0
       for (let i = 0; i < rb.n; ++i) {
-        if ((rb.hsM[i].giatri < rb.hsM[posOfMaxDelta].giatri) || (rb.hsM[i].giatri == rb.hsM[posOfMaxDelta].giatri && rb.rb[rb.m][posOfMaxDelta].giatri > rb.rb[rb.m][i].giatri && rb.rb[rb.m][i].giatri > 0)) {
+        if ((rb.hsM[i].giatri < rb.hsM[posOfMaxDelta].giatri) || (rb.hsM[i].giatri === rb.hsM[posOfMaxDelta].giatri && rb.rb[rb.m][posOfMaxDelta].giatri > rb.rb[rb.m][i].giatri && rb.rb[rb.m][i].giatri > 0)) {
           posOfMaxDelta = i
         }
       }
@@ -400,10 +400,10 @@ function processing (paramFx, paramMatrix, paramRB, paramFxType) {
     }
     const minValue = rb.rb[posOfMinVar][posOfMaxDelta]
     for (let i = 0; i < rb.m; i++) {
-      if (i != posOfMinVar) {
+      if (i !== posOfMinVar) {
         rb.pa[i] = Div(Sub(Multi(rb.pa[i], minValue), Multi(rb.pa[posOfMinVar], rb.rb[i][posOfMaxDelta])), minValue)
         for (let j = 0; j < rb.n; j++) {
-          if (j != posOfMaxDelta) {
+          if (j !== posOfMaxDelta) {
             rb.rb[i][j] = Div(Sub(Multi(rb.rb[i][j], minValue), Multi(rb.rb[posOfMinVar][j], rb.rb[i][posOfMaxDelta])), minValue)
           }
         }
@@ -411,7 +411,7 @@ function processing (paramFx, paramMatrix, paramRB, paramFxType) {
     }
 
     for (let i = 0; i < rb.m; i++) {
-      if (i != posOfMinVar) {
+      if (i !== posOfMinVar) {
         rb.rb[i][posOfMaxDelta].init()
       }
     }
