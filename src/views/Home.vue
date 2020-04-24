@@ -10,7 +10,7 @@
           <div class="p-5">
             <div class="font-semibold text-xl">{{ item.title }}</div>
             <p class="text-gray-700 text-base mb-4">{{ item.description }}</p>
-            <router-link :to="{ name: 'c1' }" class="bg-blue-500 hover:bg-blue-700 focus:outline-none focus:shadow-outline text-white py-2 px-4 rounded">
+            <router-link :to="{ name: item.route }" class="bg-blue-500 hover:bg-blue-700 focus:outline-none focus:shadow-outline text-white py-2 px-4 rounded">
               Xem &raquo;
             </router-link>
           </div>
@@ -34,17 +34,17 @@ export default {
         {
           title: 'Chương 2',
           description: 'Bài toán đối ngẫu',
-          route: ''
+          route: 'c2'
         },
         {
           title: 'Chương 3',
           description: 'Bài toán vận tải',
-          route: ''
+          route: 'c3'
         },
         {
           title: 'Chương 4',
           description: 'Phương án sơ đồ mạng',
-          route: ''
+          route: 'c4'
         }
       ]
     }

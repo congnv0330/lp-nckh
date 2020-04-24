@@ -4,8 +4,13 @@ import router from './router'
 // import store from './store'
 
 import './css/main.css'
+import Toasted from 'vue-toasted'
 
-Vue.config.productionTip = false
+Vue.use(Toasted, {
+  position: 'bottom-right',
+  duration: 2000,
+  keepOnHover: true
+})
 
 new Vue({
   router,
