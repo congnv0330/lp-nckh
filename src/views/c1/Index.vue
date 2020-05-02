@@ -76,13 +76,7 @@
                               <td class="border px-4 py-2"></td>
                               <td class="border px-4 py-2"></td>
                               <template v-for="(val, j) in row">
-                                <td class="border px-4 py-2" :key="'td_' + j + '-' + i">
-                                  <div v-if = "j === 1">
-                                  x<sub>{{ val }}</sub>
-                                </div>
-                                <div v-else>
-                                  {{ val }}
-                                </div></td>
+                                <td class="border px-4 py-2" :key="'td_' + j + '-' + i">{{ val }}</td>
                               </template>
                           </template>
                         </tr>
