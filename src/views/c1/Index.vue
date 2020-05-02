@@ -48,11 +48,11 @@
             <table class="table-auto text-center w-full mb-5">
                 <thead>
                   <tr>
-                    <th class="border px-4 py-2">Hệ số Ci</th>
+                    <th class="border px-4 py-2">Hệ số C<sub>i</sub></th>
                     <th class="border px-4 py-2">Ẩn cơ sở</th>
                     <th class="border px-4 py-2">Phương án</th>
                     <template v-for="x in output.nX">
-                      <th class="border px-4 py-2" :key="'th' + x">x{{ x }}</th>
+                      <th class="border px-4 py-2" :key="'th' + x">x<sub>{{ x }}</sub></th>
                     </template>
                   </tr>
                 </thead>
@@ -62,7 +62,13 @@
                         <tr :key="'row' + i">
                           <template v-if="i < output.nLine">
                             <template v-for="(val, j) in row">
-                              <td class="border-l border-r px-4 py-2" :key="'td' + j + '-' + i">{{ val }}</td>
+                              <td class="border-l border-r px-4 py-2" :key="'td' + j + '-' + i">
+                                <div v-if = "j === 1">
+                                  x<sub>{{ val }}</sub>
+                                </div>
+                                <div v-else>
+                                  {{ val }}
+                                </div></td>
                             </template>
                           </template>
                           <template v-else>
@@ -70,7 +76,13 @@
                               <td class="border px-4 py-2"></td>
                               <td class="border px-4 py-2"></td>
                               <template v-for="(val, j) in row">
-                                <td class="border px-4 py-2" :key="'td_' + j + '-' + i">{{ val }}</td>
+                                <td class="border px-4 py-2" :key="'td_' + j + '-' + i">
+                                  <div v-if = "j === 1">
+                                  x<sub>{{ val }}</sub>
+                                </div>
+                                <div v-else>
+                                  {{ val }}
+                                </div></td>
                               </template>
                           </template>
                         </tr>
