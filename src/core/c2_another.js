@@ -146,7 +146,7 @@ function printDualityOptimal (patuY, dualityLp, originaLp, differentZeroX, patuX
   let res = '<p class="font-semibold">Phương án tối ưu của bài toán đối ngẫu:</p><hr class="my-4">'
   res += 'Ta có:\n'
   for (let i = 0; i < differentZeroX.length; i++) {
-    res += 'x' + (differentZeroX[i] + 1).toString() + ' = ' + patuX.x[differentZeroX[i]].Xuat + ' khác 0 -> '
+    res += 'x' + '<sub>' + (differentZeroX[i] + 1).toString() + '</sub>' + ' = ' + patuX.x[differentZeroX[i]].Xuat + ' &ne; 0 &rarr; '
     let s2 = ''
     let cnt = 0
     for (let j = 0; j < dualityLp.rb[differentZeroX[i]].length; j++) {
@@ -164,7 +164,7 @@ function printDualityOptimal (patuY, dualityLp, originaLp, differentZeroX, patuX
       if (dualityLpValue !== 1 && dualityLpValue !== -1) {
         s2 += (dualityLp.rb[differentZeroX[i]][j].Xuat_duong).toString()
       }
-      s2 += 'y' + (j + 1).toString()
+      s2 += 'y<sub>' + (j + 1).toString() + '</sub>'
       cnt += 1
     }
     s2 += ' = ' + dualityLp.pa[differentZeroX[i]].Xuat + '\n'
@@ -215,7 +215,7 @@ function printDualityOptimal (patuY, dualityLp, originaLp, differentZeroX, patuX
   if (freeX.length !== 0) {
     res += 'Ta lấy: '
     for (let i = 0; i < freeX.length; i++) {
-      res += 'y' + (freeX[i] + 1).toString() + ' = 0'
+      res += 'y<sub>' + (freeX[i] + 1).toString() + '</sub> = 0'
     }
   }
   res += '\nGiải các phương trình ta được: '
