@@ -4,7 +4,7 @@
     <p class="text-center md:text-left text-gray-700 mb-5">
       Quy hoạch tuyến tính là bài toán tối ưu hóa, trong đó hàm mục tiêu và các điều kiện ràng buộc đều là tuyến tính.
     </p>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
       <template v-for="(item, index) in items">
         <div :key="index" class="bg-white rounded shadow-md">
           <div class="p-5">
@@ -40,11 +40,6 @@ export default {
           title: 'Chương 3',
           description: 'Bài toán vận tải',
           route: 'c3'
-        },
-        {
-          title: 'Chương 4',
-          description: 'Phương án sơ đồ mạng',
-          route: 'c4'
         }
       ]
     }

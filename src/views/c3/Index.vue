@@ -6,8 +6,8 @@
       <router-link class="align-baseline font-bold text-sm text-gray-500 hover:text-gray-700 mr-5" :to="{ name: 'c2' }">
         &larr; Chương trước
       </router-link>
-      <router-link class="align-baseline font-bold text-sm text-blue-500 hover:text-blue-700" :to="{ name: 'c4' }">
-        Chương kế &rarr;
+      <router-link class="align-baseline font-bold text-sm text-blue-500 hover:text-blue-700" :to="{ name: 'home' }">
+        Trang chủ &rarr;
       </router-link>
     </div>
   </div>

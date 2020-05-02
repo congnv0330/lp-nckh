@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import UCLN from '@/core/utils/ucln'
 
 class PhanSo {
@@ -23,6 +25,7 @@ class PhanSo {
 
   get Xuat () {
     let s = ''
+
     if (this.tu / this.mau === 0) {
       return '0'
     }
@@ -30,10 +33,29 @@ class PhanSo {
     if (this.tu / this.mau < 0) {
       s += '-'
     }
+
     s += (Math.abs(this.tu)).toString()
+
     if (this.mau !== 1) {
       s += '/' + (Math.abs(this.mau)).toString()
     }
+
+    return s
+  }
+
+  get Xuat_duong () {
+    let s = ''
+
+    if (this.tu / this.mau === 0) {
+      return '0'
+    }
+
+    s += (Math.abs(this.tu)).toString()
+
+    if (this.mau !== 1) {
+      s += '/' + (Math.abs(this.mau)).toString()
+    }
+
     return s
   }
 }

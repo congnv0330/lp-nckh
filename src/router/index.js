@@ -25,11 +25,11 @@ const routes = [
     name: 'c3',
     component: () => import(/* webpackChunkName: "c3" */ '../views/c3/Index.vue')
   },
-  {
-    path: '/c4',
-    name: 'c4',
-    component: () => import(/* webpackChunkName: "c4" */ '../views/c4/Index.vue')
-  },
+  // {
+  //   path: '/c4',
+  //   name: 'c4',
+  //   component: () => import(/* webpackChunkName: "c4" */ '../views/c4/Index.vue')
+  // },
   {
     path: '/about',
     name: 'about',
