@@ -40,6 +40,7 @@
         </div>
       </div>
       <div v-if="hasSubmit" class="bg-white shadow-md p-5 lg:col-span-2">
+        <div class="bg-white shadow-md p-5 lg:col-span-2 whitespace-pre-line" v-html="outputPrint"></div><br>
         <template v-if="output.answer.success">
           <h1 class="text-lg font-semibold">Bài toán có lời giải</h1>
           <hr class="my-4">
@@ -111,6 +112,7 @@
 
 <script>
 import c1 from '@/core/c1'
+import c1Print from '@/core/c1Print'
 
 export default {
   name: 'C1Index',
@@ -123,7 +125,8 @@ export default {
         type: 'min'
       },
       hasSubmit: false,
-      output: {}
+      output: {},
+      outputPrint: ''
     }
   },
   methods: {
@@ -131,7 +134,8 @@ export default {
       if (this.input.fx.trim() !== '' && this.input.matrix.trim() !== '' && this.input.fxRB.trim() !== '') {
         this.hasSubmit = true
         this.output = c1(this.input.fx, this.input.matrix, this.input.fxRB, this.input.type)
-        // console.log(this.output)
+        this.outputPrint = c1Print(this.input.fx, this.input.matrix, this.input.fxRB, this.input.type)
+        console.log(this.outputPrint)
       } else {
         this.$toasted.show('Không đủ dữ kiện đầu vào!')
         // console.log('Không đủ dữ kiện đầu vào!')
@@ -140,6 +144,7 @@ export default {
     reset () {
       this.input.fx = this.input.matrix = this.input.fxRB = ''
       this.input.type = 'min'
+      this.hasSubmit = false
     }
   }
 }

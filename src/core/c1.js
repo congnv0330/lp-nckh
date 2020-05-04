@@ -302,10 +302,32 @@ function Savesol (hs, lp) {
       // tmp.push(lp.pa[i].tu.toString() + '/' + lp.pa[i].mau.toString())
       tmp.push(lp.pa[i].Xuat)
     }
-
-    for (let j = 0; j < lp.n; j++) {
-      // tmp.push(lp.rb[i][j].tu.toString() + '/' + lp.rb[i][j].mau.toString())
-      tmp.push(lp.rb[i][j].Xuat)
+    if (i === lp.m) {
+      for (let j = 0; j < lp.n; j++) {
+        let s = ''
+        if (lp.hsM[j].giatri === 0) {
+          tmp.push(lp.rb[i][j].Xuat)
+          continue
+        } else if (lp.hsM[j].giatri === 1) {
+          s = 'M'
+        } else if (lp.hsM[j].giatri === -1) {
+          s = '- M'
+        } else if (lp.hsM[j].giatri !== 0) {
+          s = lp.hsM[j].Xuat + 'M'
+        }
+        if (lp.hsM[j].giatri !== 0 && lp.rb[i][j].giatri === 0) {
+          tmp.push(s)
+          continue
+        }
+        s += (lp.rb[i][j].giatri < 0 ? ' - ' : ' + ')
+        s += lp.rb[i][j].Xuat_duong
+        tmp.push(s)
+      }
+    } else {
+      for (let j = 0; j < lp.n; j++) {
+        // tmp.push(lp.rb[i][j].tu.toString() + '/' + lp.rb[i][j].mau.toString())
+        tmp.push(lp.rb[i][j].Xuat)
+      }
     }
     res.push(tmp)
   }
