@@ -21,10 +21,10 @@ class LinearProgramming {
   }
 }
 
-const failed = {
-  success: false,
-  result: 'Không có patu tối ưu'
-}
+// const failed = {
+//   success: false,
+//   result: 'Không có patu tối ưu'
+// }
 
 function Sum (p1, p2) { const sum = new PhanSo(); sum.tu = p1.tu * p2.mau + p2.tu * p1.mau; sum.mau = p1.mau * p2.mau; sum.RutGon(); return sum }
 
@@ -287,7 +287,7 @@ function calculateFx (x, rb) {
   return pa_result
 }
 
-function Savesol (hs, lp) {
+function Savesol (hs, lp, posOfMaxDelta, posOfMinVar, checkDeltaNow) {
   const res = []
   for (let i = 0; i < lp.m + 1; i++) {
     const tmp = []
@@ -306,27 +306,33 @@ function Savesol (hs, lp) {
       for (let j = 0; j < lp.n; j++) {
         let s = ''
         if (lp.hsM[j].giatri === 0) {
-          tmp.push(lp.rb[i][j].Xuat)
+          s = lp.rb[i][j].Xuat
+          if (j === posOfMaxDelta) { s = '(' + s + ')' }
+          tmp.push(s)
           continue
         } else if (lp.hsM[j].giatri === 1) {
           s = 'M'
         } else if (lp.hsM[j].giatri === -1) {
-          s = '- M'
+          s = '-M'
         } else if (lp.hsM[j].giatri !== 0) {
           s = lp.hsM[j].Xuat + 'M'
         }
         if (lp.hsM[j].giatri !== 0 && lp.rb[i][j].giatri === 0) {
+          if (j === posOfMaxDelta) { s = '(' + s + ')' }
           tmp.push(s)
           continue
         }
-        s += (lp.rb[i][j].giatri < 0 ? ' - ' : ' + ')
+        s += (lp.rb[i][j].giatri < 0 ? '-' : '+')
         s += lp.rb[i][j].Xuat_duong
+        if (posOfMaxDelta !== -1 && j === posOfMaxDelta) { s = '(' + s + ')' }
         tmp.push(s)
       }
     } else {
       for (let j = 0; j < lp.n; j++) {
         // tmp.push(lp.rb[i][j].tu.toString() + '/' + lp.rb[i][j].mau.toString())
-        tmp.push(lp.rb[i][j].Xuat)
+        let s = lp.rb[i][j].Xuat
+        if (((posOfMaxDelta !== -1 && i === posOfMinVar) || checkDeltaNow === 0) && j === posOfMaxDelta) { s = '[' + s + ']' }
+        tmp.push(s)
       }
     }
     res.push(tmp)
@@ -344,11 +350,11 @@ function print (hs, fxType, lp) {
     x[hs[i]].mau = lp.pa[i].mau
   }
 
-  for (let i = 0; i < lp.fakeVar.length; i++) {
-    if (x[lp.fakeVar[i]].giatri !== 0) {
-      return failed
-    }
-  }
+  // for (let i = 0; i < lp.fakeVar.length; i++) {
+  //   if (x[lp.fakeVar[i]].giatri !== 0) {
+  //     return failed
+  //   }
+  // }
   for (let i = 0; i < lp.n; i++) {
     if (lp.rbdau[i] === -1) { x[i].tu *= -1; lp.fx[i].tu *= -1 }
   }
@@ -384,32 +390,22 @@ function processing (paramFx, paramMatrix, paramRB, paramFxType) {
   rb = setMatrix(rb)
   const hs = addBase(rb)
   const allS = []
-  let s = ''
   const mp = []
-  const res = { nX: rb.n, nLine: rb.m, steps: [], answer: {} }
-  for (const x in hs) {
-    s = s + hs[x].toString()
-  }
+  let s = ''
+  for (let i = 0; i < rb.m; i++) { s = s + hs[i].toString() }
   if (mp[s] === undefined) { mp[s] = 0 }
   mp[s] += 1
+  const res = { nX: rb.n, nLine: rb.m, steps: [], answer: {} }
   while (true) {
     let posOfMaxDelta = calculateDelta(rb, hs)
-    allS.push(Savesol(hs, rb))
-    const checkDeltaNow = checkDelta(rb)
-    if (checkDeltaNow === 0) {
-      res.answer = failed
-      return res
-    } else if (checkDeltaNow === 1) {
-      res.steps = allS
-      res.answer = print(hs, paramFxType, rb)
-      return res
-    }
-
     let posOfMinVar = findMin(rb, posOfMaxDelta)
-    hs[posOfMinVar] = posOfMaxDelta
     s = ''
-    for (const x in hs) {
-      s = s + hs[x].toString()
+    for (let i = 0; i < rb.m; i++) {
+      if (i === posOfMinVar) {
+        s = s + (posOfMaxDelta).toString()
+      } else {
+        s = s + hs[i].toString()
+      }
     }
     if (mp[s] === undefined) { mp[s] = 0 }
     mp[s] += 1
@@ -421,8 +417,22 @@ function processing (paramFx, paramMatrix, paramRB, paramFxType) {
         }
       }
       posOfMinVar = findMin(rb, posOfMaxDelta)
-      hs[posOfMinVar] = posOfMaxDelta
     }
+    const checkDeltaNow = checkDelta(rb)
+    if (checkDeltaNow === 1) {
+      posOfMaxDelta = -1
+    }
+    allS.push(Savesol(hs, rb, posOfMaxDelta, posOfMinVar, checkDeltaNow))
+    if (checkDeltaNow === 0) {
+      res.steps = allS
+      res.answer = false
+      return res
+    } else if (checkDeltaNow === 1) {
+      res.steps = allS
+      res.answer = print(hs, paramFxType, rb)
+      return res
+    }
+    if (posOfMaxDelta !== -1) { hs[posOfMinVar] = posOfMaxDelta }
     const minValue = rb.rb[posOfMinVar][posOfMaxDelta]
     for (let i = 0; i < rb.m; i++) {
       if (i !== posOfMinVar) {

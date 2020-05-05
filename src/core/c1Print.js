@@ -204,18 +204,16 @@ function addBase (rb) {
 function processing (paramFx, paramMatrix, paramRB, paramFxType) {
   let rb = input(paramFx, paramMatrix, paramRB, paramFxType)
   let res = ''
-  res = '<p class="text-lg font-semibold">Bài toán</p><hr class="my-4">'
-  res += '<table style="width:100%"><tr><td><strong>Dạng chính tắc</strong></td><td></td><td><strong>Dạng chuẩn</strong></td></tr>'
-  res += '<tr><td><strong><font color = "DodgerBlue">F(x):</font></strong>  '
+  res = '<p class="text-lg font-semibold">Bài toán</p><hr class="my-4"><table style="width:100%"><tr><td><strong>Dạng chính tắc</strong></td><td></td><td><strong>Dạng chuẩn</strong></td></tr><tr><td><strong><font color = "DodgerBlue">F(x):</font></strong>  '
   let cnt = 0
   for (let i = 0; i < rb.fx.length; i++) {
     if (rb.fx[i].giatri === 0) {
       continue
     }
     if (cnt !== 0) {
-      res += (rb.fx[i].giatri > 0 ? ' + ' : ' - ')
+      res += (rb.fx[i].giatri > 0 ? ' + ' : ' &#8722; ')
     } else if (rb.fx[i].giatri < 0) {
-      res += '-'
+      res += '&#8722;'
     }
     if (rb.fx[i].giatri !== 1 && rb.fx[i].giatri !== -1) {
       res += rb.fx[i].Xuat_duong
@@ -223,27 +221,29 @@ function processing (paramFx, paramMatrix, paramRB, paramFxType) {
     res += 'x<sub>' + (i + 1).toString() + '</sub>'
     cnt += 1
   }
-  res += ' &rarr; <font color = "Tomato"><strong>' + rb.type + '</strong></font>\n<strong>Ràng buộc:</strong>\n'
+  res += ' &rarr; <font color = "Tomato"><strong>' + rb.type + '</strong></font>\n<strong>Ràng buộc:</strong>&emsp;&emsp; <table>'
   for (let i = 0; i < rb.m; i++) {
-    res += '&emsp;&emsp;'
+    res += '<tr>'
     let cnt = 0
     for (let j = 0; j < rb.n; j++) {
       const rbValue = rb.rb[i][j].giatri
       if (rbValue === 0) {
-        res += '&ensp;&ensp;'
+        res += '<td></td>'
         continue
       }
+      res += '<td>'
       if (cnt !== 0) {
-        res += (rbValue > 0 ? ' + ' : ' - ')
+        res += (rbValue > 0 ? ' + ' : ' &#8722; ')
       } else if (rbValue < 0) {
-        res += '-'
+        res += '&#8722;'
       }
       if (rbValue !== 1 && rbValue !== -1) {
         res += rb.rb[i][j].Xuat_duong
       }
-      res += 'x<sub>' + (j + 1).toString() + '</sub> '
+      res += 'x<sub>' + (j + 1).toString() + '</sub></td>'
       cnt += 1
     }
+    res += '<td>'
     if (rb.d[i] === '>=') {
       res += '  &ge; '
     } else if (rb.d[i] === '<=') {
@@ -251,9 +251,9 @@ function processing (paramFx, paramMatrix, paramRB, paramFxType) {
     } else {
       res += ' = '
     }
-    res += rb.pa[i].Xuat + '\n'
+    res += '</td><td>' + rb.pa[i].Xuat + '</td></tr>'
   }
-  res += '<font color = "DodgerBlue"><strong>Với:</strong></font>\n'
+  res += '</table><font color = "DodgerBlue"><strong>Với:</strong></font>\n'
   for (let i = 0; i < rb.n; i++) {
     if (rb.rbdau[i] === undefined) {
       continue
@@ -272,14 +272,13 @@ function processing (paramFx, paramMatrix, paramRB, paramFxType) {
   res += '</td>'
   rb = setMatrix(rb)
   rb = addBase(rb)
-  res += '<td><font size = "25" color = "DodgerBlue">&rarr;</font></td>'
-  res += '<td><strong><font color = "DodgerBlue">F(x):</font></strong>  '
+  res += '<td><font size = "25" color = "DodgerBlue">&rarr;</font></td><td><strong><font color = "DodgerBlue">F(x):</font></strong>  '
   cnt = 0
   for (let i = 0; i < rb.fx.length; i++) {
     if (cnt !== 0) {
-      res += (rb.fx[i].giatri >= 0 ? ' + ' : ' - ')
+      res += (rb.fx[i].giatri >= 0 ? ' + ' : ' &#8722; ')
     } else if (rb.fx[i].giatri < 0) {
-      res += '-'
+      res += '&#8722;'
     }
     if (rb.fx[i].giatri !== 1 && rb.fx[i].giatri !== -1) {
       if (rb.fx[i].giatri === 99999999) {
@@ -291,30 +290,31 @@ function processing (paramFx, paramMatrix, paramRB, paramFxType) {
     res += 'x<sub>' + (i + 1).toString() + '</sub>'
     cnt += 1
   }
-  res += ' &rarr; <font color = "Tomato"><strong>' + rb.type + '</strong></font>\n<strong>Ràng buộc:</strong>\n'
+  res += ' &rarr; <font color = "Tomato"><strong>' + rb.type + '</strong></font>\n<strong>Ràng buộc:</strong>&emsp;&emsp; <table>'
   for (let i = 0; i < rb.m; i++) {
-    res += '&emsp;&emsp;'
+    res += '<tr>'
     let cnt = 0
     for (let j = 0; j < rb.n; j++) {
       const rbValue = rb.rb[i][j].giatri
       if (rbValue === 0) {
-        res += '&emsp;&emsp;'
+        res += '<td></td>'
         continue
       }
+      res += '<td>'
       if (cnt !== 0) {
-        res += (rbValue >= 0 ? ' + ' : ' - ')
+        res += (rbValue >= 0 ? ' + ' : ' &#8722; ')
       } else if (rbValue < 0) {
-        res += '-'
+        res += '&#8722;'
       }
       if (rbValue !== 1 && rbValue !== -1) {
         res += rb.rb[i][j].Xuat_duong
       }
-      res += 'x<sub>' + (j + 1).toString() + '</sub> '
+      res += 'x<sub>' + (j + 1).toString() + '</sub></td>'
       cnt += 1
     }
-    res += ' = ' + rb.pa[i].Xuat + '\n'
+    res += '<td>=</td><td>' + rb.pa[i].Xuat + '</td>'
   }
-  res += '<font color = "DodgerBlue"><strong>Với:</strong></font>\n'
+  res += '</table><font color = "DodgerBlue"><strong>Với:</strong></font>\n'
   for (let i = 0; i < rb.n; i++) {
     if (rb.rbdau[i] === undefined) {
       continue

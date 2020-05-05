@@ -49,9 +49,9 @@
             <table class="table-auto text-center w-full mb-5">
                 <thead>
                   <tr>
-                    <th class="border px-4 py-2">Hệ số C<sub>i</sub></th>
-                    <th class="border px-4 py-2">Ẩn cơ sở</th>
-                    <th class="border px-4 py-2">Phương án</th>
+                    <th class="border py-3">Hệ số C<sub>i</sub></th>
+                    <th class="border py-3">Ẩn cơ sở</th>
+                    <th class="border py-3">Phương án</th>
                     <template v-for="x in output.nX">
                       <th class="border px-4 py-2" :key="'th' + x">x<sub>{{ x }}</sub></th>
                     </template>
@@ -77,7 +77,7 @@
                               <td class="border px-4 py-2"></td>
                               <td class="border px-4 py-2"></td>
                               <template v-for="(val, j) in row">
-                                <td class="border px-4 py-2" :key="'td_' + j + '-' + i">{{ val }}</td>
+                                <td class="border-l border-r border py-3" :key="'td_' + j + '-' + i">{{ val }}</td>
                               </template>
                           </template>
                         </tr>
@@ -95,7 +95,52 @@
           </div>
         </template>
         <template v-else>
-          <h1 class="text-lg">Không có patu</h1>
+          <h1 class="text-lg font-semibold">Bài toán không có phương án tối ưu do tồn tại &Delta;<sub>k</sub> > 0, mà a<sub>ik</sub> &le; 0, &forall;i</h1>
+          <hr class="my-4">
+          <p class="mb-3">Bảng đơn hình</p>
+          <div class="overflow-auto">
+            <table class="table-auto text-center w-full mb-5">
+                <thead>
+                  <tr>
+                    <th class="border py-3">Hệ số C<sub>i</sub></th>
+                    <th class="border py-3">Ẩn cơ sở</th>
+                    <th class="border py-3">Phương án</th>
+                    <template v-for="x in output.nX">
+                      <th class="border px-4 py-2" :key="'th' + x">x<sub>{{ x }}</sub></th>
+                    </template>
+                  </tr>
+                </thead>
+                <template v-for="(step, index) in output.steps">
+                    <tbody :key="index" class="border">
+                      <template v-for="(row, i) in step">
+                        <tr :key="'row' + i">
+                          <template v-if="i < output.nLine">
+                            <template v-for="(val, j) in row">
+                              <td class="border-l border-r px-4 py-2" :key="'td' + j + '-' + i">
+                                <div v-if = "j === 1">
+                                  x<sub>{{ val }}</sub>
+                                </div>
+                                <div v-else>
+                                  {{ val }}
+                                </div></td>
+                            </template>
+                          </template>
+                          <template v-else>
+                              <td class="border px-4 py-2"></td>
+                              <td class="border px-4 py-2"></td>
+                              <td class="border px-4 py-2"></td>
+                              <template v-for="(val, j) in row">
+                                <td class="border-l border-r border py-3" :key="'td_' + j + '-' + i">{{ val }}</td>
+                              </template>
+                          </template>
+                        </tr>
+                      </template>
+                    </tbody>
+                  </template>
+                </table>
+              <div>
+            </div>
+          </div>
         </template>
       </div>
     </div>
@@ -119,9 +164,9 @@ export default {
   data () {
     return {
       input: {
-        fx: '1 -1 -3',
-        matrix: '2 -1 1 <= 1\n4 -2 1 >= -2\n3 0 1 <= 5',
-        fxRB: '1 2 3 >= 0',
+        fx: '1 2 0 1 -5',
+        matrix: '0 0 -3 -9 0 = 0\n0 1 -7 -5 -2 = 5\n3 -1 2 4 1 = 2',
+        fxRB: '1 2 3 4 5 >= 0',
         type: 'min'
       },
       hasSubmit: false,
@@ -135,7 +180,6 @@ export default {
         this.hasSubmit = true
         this.output = c1(this.input.fx, this.input.matrix, this.input.fxRB, this.input.type)
         this.outputPrint = c1Print(this.input.fx, this.input.matrix, this.input.fxRB, this.input.type)
-        console.log(this.outputPrint)
       } else {
         this.$toasted.show('Không đủ dữ kiện đầu vào!')
         // console.log('Không đủ dữ kiện đầu vào!')
