@@ -143,8 +143,13 @@ function changeMatrixRb (orginLN) {
 //  patuY.x[0] = new PhanSo()
 // }
 function printDualityOptimal (patuY, dualityLp, originaLp, differentZeroX, patuX, devirb, devival, freeX) {
-  let res = '<p class="font-semibold">Phương án tối ưu của bài toán đối ngẫu:</p><hr class="my-4">'
-  res += 'Ta có:\n'
+  for (let i = 0; i < patuY.x.length; i++) {
+    if (patuY.x[i] === undefined) {
+      return '<p class="font-semibold">Không tìm được phương án tối ưu</p><hr class="my-4">'
+    }
+  }
+  let res = '<div class="overflow-auto"><p class="text-lg font-semibold">Phương án tối ưu của bài toán đối ngẫu:</p><hr class="my-4"><table class="table-auto w-full mb-5"><tr><td nowrap="nowrap">'
+  res += 'Ta có:<br>'
   for (let i = 0; i < differentZeroX.length; i++) {
     res += 'x' + '<sub>' + (differentZeroX[i] + 1).toString() + '</sub>' + ' = ' + patuX.x[differentZeroX[i]].Xuat + ' &ne; 0 &rarr; '
     let s2 = ''
@@ -167,7 +172,7 @@ function printDualityOptimal (patuY, dualityLp, originaLp, differentZeroX, patuX
       s2 += 'y<sub>' + (j + 1).toString() + '</sub>'
       cnt += 1
     }
-    s2 += ' = ' + dualityLp.pa[differentZeroX[i]].Xuat + '\n'
+    s2 += ' = ' + dualityLp.pa[differentZeroX[i]].Xuat + '<br>'
     res += s2
   }
   res += '<br>'
@@ -177,7 +182,7 @@ function printDualityOptimal (patuY, dualityLp, originaLp, differentZeroX, patuX
     for (let i = 0; i < devirb.length; i++) {
       tmps += '(' + (devirb[i] + 1).toString() + ')'
     }
-    res += 'Thay X* vào ràng buộc ' + tmps + ' của bài toán gốc\n'
+    res += 'Thay X* vào ràng buộc ' + tmps + ' của bài toán gốc<br>'
     for (let i = 0; i < devirb.length; i++) {
       let s2 = ''; let s3 = ''
       let cnt = 0
@@ -199,17 +204,17 @@ function printDualityOptimal (patuY, dualityLp, originaLp, differentZeroX, patuX
           s2 += (originaLp.rb[devirb[i]][j].Xuat_duong).toString()
           s3 += (originaLp.rb[devirb[i]][j].Xuat_duong).toString()
         }
-        s2 += 'x' + (j + 1).toString()
+        s2 += 'x<sub>' + (j + 1).toString() + '</sub>'
         s3 += (originaLpValue !== 1 && originaLpValue !== 1 ? '.' : '') + (patuX.x[j].Xuat).toString()
         cnt += 1
       }
       s2 += (originaLp.pa[devirb[i]].giatri > 0 ? ' - ' : ' + ') + originaLp.pa[devirb[i]].Xuat_duong + ' = '
       s3 += (originaLp.pa[devirb[i]].giatri > 0 ? ' - ' : ' + ') + originaLp.pa[devirb[i]].Xuat_duong + ' = '
-      res += s2 + s3 + devival[i].Xuat + '\n'
+      res += s2 + s3 + devival[i].Xuat + '<br>'
     }
-    res += '\nNên:\n'
+    res += '<br>Nên:<br>'
     for (let i = 0; i < devirb.length; i++) {
-      res = res + 'y' + (devirb[i] + 1).toString() + ' = 0\n'
+      res = res + 'y<sub>' + (devirb[i] + 1).toString() + '</sub> = 0<br>'
     }
   }
   if (freeX.length !== 0) {
@@ -218,21 +223,21 @@ function printDualityOptimal (patuY, dualityLp, originaLp, differentZeroX, patuX
       res += 'y<sub>' + (freeX[i] + 1).toString() + '</sub> = 0'
     }
   }
-  res += '\nGiải các phương trình ta được: '
-  res += '\n<span class="font-semibold">Y*</span> = ('
+  res += '<br>Giải các phương trình ta được: '
+  res += '<br><span class="font-semibold">Y*</span> = ('
   for (let i = 0; i < patuY.x.length; i++) {
     res += patuY.x[i].Xuat
     if (i !== dualityLp.n - 1) {
       res += ', '
     }
   }
-  res += ') Và <span class="font-semibold">g(Y*)</span> = '
+  res += ') và <span class="font-semibold">g(Y*)</span> = '
   let pa_result = new PhanSo()
   for (let i = 0; i < dualityLp.n; i++) {
     pa_result = Sum(pa_result, Multi(dualityLp.fx[i], patuY.x[i]))
   }
-  res += pa_result.Xuat + ' = f(X*)'
-
+  res += pa_result.Xuat + ' = <span class = "font-semibold"> f(X*)</span>'
+  res += '</td></tr></table></div>'
   return res
 }
 

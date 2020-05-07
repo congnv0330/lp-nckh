@@ -136,6 +136,41 @@ function setMatrix (lp) {
   return rb
 }
 
+function changeMatrixRb (orginLN) {
+  const dn = new LinearProgramming()
+  dn.orginN = orginLN.m
+  if (orginLN.type === 'min') {
+    dn.type = 'max'
+    for (let i = 0; i < orginLN.m; i++) {
+      if (orginLN.d[i] === '<=') { dn.rbdau[i] = -1 } else if (orginLN.d[i] === '>=') { dn.rbdau[i] = 1 }
+    }
+    for (let i = 0; i < orginLN.n; i++) {
+      if (orginLN.rbdau[i] === undefined) { dn.d[i] = '=' } else if (orginLN.rbdau[i] === 1) { dn.d[i] = '<=' } else if (orginLN.rbdau[i] === -1) { dn.d[i] = '>=' }
+    }
+  } else {
+    dn.type = 'min'
+    for (let i = 0; i < orginLN.m; i++) {
+      if (orginLN.d[i] === '<=') { dn.rbdau[i] = 1 } else if (orginLN.d[i] === '>=') { dn.rbdau[i] = -1 }
+    }
+    for (let i = 0; i < orginLN.n; i++) {
+      if (orginLN.rbdau[i] === undefined) { dn.d[i] = '=' } else if (orginLN.rbdau[i] === 1) { dn.d[i] = '>=' } else if (orginLN.rbdau[i] === -1) { dn.d[i] = '<=' }
+    }
+  }
+  dn.n = orginLN.m
+  dn.m = orginLN.n
+  for (let i = 0; i < orginLN.m; i++) {
+    dn.fx[i] = orginLN.pa[i]
+  }
+  for (let i = 0; i < orginLN.n; i++) {
+    dn.pa[i] = orginLN.fx[i]
+    dn.rb[i] = []
+    for (let j = 0; j < orginLN.m; j++) {
+      dn.rb[i][j] = orginLN.rb[j][i]
+    }
+  }
+  return dn
+}
+
 function setrb (rb) {
   for (let i = 0; i < rb.m; i++) {
     for (let j = 0; j < rb.n; j++) {
@@ -201,11 +236,9 @@ function addBase (rb) {
   return rb
 }
 
-function processing (paramFx, paramMatrix, paramRB, paramFxType) {
-  let rb = input(paramFx, paramMatrix, paramRB, paramFxType)
-  let res = ''
-  res = '<div class="overflow-auto"><p class="text-lg font-semibold">Bài toán</p><hr class="my-4"><table class="table-auto w-full mb-5"><tr><td><strong>Dạng chính tắc</strong></td><td></td><td><strong>Dạng chuẩn</strong></td></tr><tr><td nowrap="nowrap"><strong><font color = "DodgerBlue">F(x):</font></strong>  '
+function printOriginlAndDuality (rb, res) {
   let cnt = 0
+  res += '<td style="vertical-align:top" nowrap="nowrap"><strong><font color = "DodgerBlue">F(x):</font></strong> '
   for (let i = 0; i < rb.fx.length; i++) {
     if (rb.fx[i].giatri === 0) {
       continue
@@ -274,71 +307,84 @@ function processing (paramFx, paramMatrix, paramRB, paramFxType) {
     }
   }
   res += '</td>'
-  rb = setMatrix(rb)
-  rb = addBase(rb)
-  res += '<td><font size = "25" color = "DodgerBlue">&rarr;</font></td><td nowrap="nowrap"><strong><font color = "DodgerBlue">F(x):</font></strong>  '
-  cnt = 0
-  for (let i = 0; i < rb.fx.length; i++) {
-    if (cnt !== 0) {
-      res += (rb.fx[i].giatri >= 0 ? ' + ' : ' &#8722; ')
-    } else if (rb.fx[i].giatri < 0) {
-      res += '&#8722;'
-    }
-    if (rb.fx[i].giatri !== 1 && rb.fx[i].giatri !== -1) {
-      if (rb.fx[i].giatri === 99999999) {
-        res += 'M'
-      } else {
-        res += rb.fx[i].Xuat_duong
-      }
-    }
-    res += 'x<sub>' + (i + 1).toString() + '</sub>'
-    cnt += 1
-  }
-  res += ' &rarr; <font color = "Tomato"><strong>' + rb.type + '</strong></font><br><strong>Ràng buộc:</strong>&emsp;&emsp; <table>'
-  for (let i = 0; i < rb.m; i++) {
-    res += '<tr>'
+  return res
+}
+
+function processing (paramFx, paramMatrix, paramRB, paramFxType, option) {
+  const rb = input(paramFx, paramMatrix, paramRB, paramFxType)
+  let res = ''
+  res = '<div class="overflow-auto"><p class="text-lg font-semibold">Bài toán</p><hr class="my-4"><table class="table-auto w-full mb-5"><tr><td class="text-lg"><strong>Dạng chính tắc</strong></td><td class="text-lg"><strong>Dạng đối ngẫu</strong></td></tr><tr>'
+  res = printOriginlAndDuality(rb, res)
+  let dn = changeMatrixRb(rb)
+  res = printOriginlAndDuality(dn, res)
+  if (option === 1) {
+    dn = setMatrix(dn)
+    dn = addBase(dn)
+    res += '</tr></table><br>'
+    res += '<hr class="my-4"><table class="table-auto w-full mb-5><tr><td class="text-lg"><strong>Dạng chuẩn của bài toán đối ngẫu</strong></td></tr><td nowrap="nowrap"><strong><font color = "DodgerBlue">F(x):</font></strong>  '
     let cnt = 0
-    for (let j = 0; j < rb.n; j++) {
-      const rbValue = rb.rb[i][j].giatri
-      if (rbValue === 0) {
-        res += '<td></td>'
-        continue
-      }
-      res += '<td>'
+    for (let i = 0; i < dn.fx.length; i++) {
       if (cnt !== 0) {
-        res += (rbValue >= 0 ? ' + ' : ' &#8722; ')
-      } else if (rbValue < 0) {
+        res += (dn.fx[i].giatri >= 0 ? ' + ' : ' &#8722; ')
+      } else if (dn.fx[i].giatri < 0) {
         res += '&#8722;'
       }
-      if (rbValue !== 1 && rbValue !== -1) {
-        res += rb.rb[i][j].Xuat_duong
+      if (dn.fx[i].giatri !== 1 && dn.fx[i].giatri !== -1) {
+        if (dn.fx[i].giatri === 99999999) {
+          res += 'M'
+        } else {
+          res += dn.fx[i].Xuat_duong
+        }
       }
-      res += 'x<sub>' + (j + 1).toString() + '</sub></td>'
+      res += 'x<sub>' + (i + 1).toString() + '</sub>'
       cnt += 1
     }
-    res += '<td>=</td><td>' + rb.pa[i].Xuat + '</td>'
-  }
-  res += '</table><font color = "DodgerBlue"><strong>Với:</strong></font><br>'
-  for (let i = 0; i < rb.n; i++) {
-    if (rb.rbdau[i] === undefined) {
-      res += 'x<sub>' + (i + 1).toString() + '</sub> ' + 'tùy ý'
-      if (i !== rb.n - 1) {
+    res += ' &rarr; <font color = "Tomato"><strong>' + dn.type + '</strong></font><br><strong>Ràng buộc:</strong>&emsp;&emsp; <table>'
+    for (let i = 0; i < dn.m; i++) {
+      res += '<tr>'
+      let cnt = 0
+      for (let j = 0; j < dn.n; j++) {
+        const dnValue = dn.rb[i][j].giatri
+        if (dnValue === 0) {
+          res += '<td></td>'
+          continue
+        }
+        res += '<td>'
+        if (cnt !== 0) {
+          res += (dnValue >= 0 ? ' + ' : ' &#8722; ')
+        } else if (dnValue < 0) {
+          res += '&#8722;'
+        }
+        if (dnValue !== 1 && dnValue !== -1) {
+          res += dn.rb[i][j].Xuat_duong
+        }
+        res += 'x<sub>' + (j + 1).toString() + '</sub></td>'
+        cnt += 1
+      }
+      res += '<td>=</td><td>' + dn.pa[i].Xuat + '</td>'
+    }
+    res += '</table><font color = "DodgerBlue"><strong>Với:</strong></font><br>'
+    for (let i = 0; i < dn.n; i++) {
+      if (dn.rbdau[i] === undefined) {
+        res += 'x<sub>' + (i + 1).toString() + '</sub> ' + 'tùy ý'
+        if (i !== dn.n - 1) {
+          res += ' , '
+        }
+        continue
+      }
+      res += 'x<sub>' + (i + 1).toString() + '</sub> '
+      if (dn.rbdau[i] === 1) {
+        res += ' &ge; '
+      } else {
+        res += ' &le; '
+      }
+      res += '0'
+      if (i !== dn.n - 1) {
         res += ' , '
       }
-      continue
-    }
-    res += 'x<sub>' + (i + 1).toString() + '</sub> '
-    if (rb.rbdau[i] === 1) {
-      res += ' &ge; '
-    } else {
-      res += ' &le; '
-    }
-    res += '0'
-    if (i !== rb.n - 1) {
-      res += ' , '
     }
   }
-  res += '</td></tr></table></div>'
+  res += '</td></table></div>'
   return res
 }
 
