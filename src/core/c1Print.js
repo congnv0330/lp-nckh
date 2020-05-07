@@ -256,6 +256,10 @@ function processing (paramFx, paramMatrix, paramRB, paramFxType) {
   res += '</table><font color = "DodgerBlue"><strong>Với:</strong></font>\n'
   for (let i = 0; i < rb.n; i++) {
     if (rb.rbdau[i] === undefined) {
+      res += 'x<sub>' + (i + 1).toString() + '</sub> ' + 'tùy ý'
+      if (i !== rb.n - 1) {
+        res += ' , '
+      }
       continue
     }
     res += 'x<sub>' + (i + 1).toString() + '</sub> '
@@ -317,6 +321,10 @@ function processing (paramFx, paramMatrix, paramRB, paramFxType) {
   res += '</table><font color = "DodgerBlue"><strong>Với:</strong></font>\n'
   for (let i = 0; i < rb.n; i++) {
     if (rb.rbdau[i] === undefined) {
+      res += 'x<sub>' + (i + 1).toString() + '</sub> ' + 'tùy ý'
+      if (i !== rb.n - 1) {
+        res += ' , '
+      }
       continue
     }
     res += 'x<sub>' + (i + 1).toString() + '</sub> '

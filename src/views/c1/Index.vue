@@ -86,7 +86,7 @@
                 </template>
             </table>
             <div>
-              <p class="mb-3">Bài toán có patu là:</p>
+              <p class="mb-3 font-semibold" >Bài toán có phần tử tối ưu là:</p>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
                 <p><span class="font-semibold">F(X*)</span> = {{ output.answer.result.fx }}</p>
                 <p><span class="font-semibold">X*</span> = ({{ output.answer.result.x.join(', ') }})</p>
