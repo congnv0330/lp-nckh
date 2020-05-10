@@ -69,113 +69,115 @@
           </button>
         </div>
       </div>
-      <div v-if="hasSubmitD2 && !isHidden" class="bg-white shadow-md p-5 lg:col-span-2 whitespace-pre-line">
-        <div class="bg-white shadow-md p-5 lg:col-span-2 whitespace-pre-line" v-html="outputPrintD2"></div><br>
-        <div class="bg-white shadow-md p-5 lg:col-span-2 whitespace-pre-line" v-html="outputD2"></div>
+      <div v-if="hasSubmitD2 && !isHidden" class="grid grid-cols-1 gap-4 lg:col-span-2 whitespace-pre-line">
+        <div class="bg-white shadow-md p-5 whitespace-pre-line" v-html="outputPrintD2"></div>
+        <div class="bg-white shadow-md p-5 whitespace-pre-line" v-html="outputD2"></div>
       </div>
-      <div v-if="hasSubmitD1 && isHidden" class="bg-white shadow-md p-5 lg:col-span-2">
-        <div class="bg-white shadow-md p-5 lg:col-span-2 whitespace-pre-line" v-html="outputPrint"></div><br>
-        <template v-if="output.answer.success">
-          <h1 class="text-lg font-semibold">Bài toán có lời giải</h1>
-          <hr class="my-4">
-          <p class="mb-3">Bảng đơn hình</p>
-          <div class="overflow-auto">
-            <table class="table-auto text-center w-full mb-5">
-                <thead>
-                  <tr>
-                    <th class="border py-3">Hệ số C<sub>i</sub></th>
-                    <th class="border py-3">Ẩn cơ sở</th>
-                    <th class="border py-3">Phương án</th>
-                    <template v-for="x in output.nX">
-                      <th class="border px-4 py-2" :key="'th' + x">x<sub>{{ x }}</sub></th>
-                    </template>
-                  </tr>
-                </thead>
-                <template v-for="(step, index) in output.steps">
-                    <tbody :key="index" class="border">
-                      <template v-for="(row, i) in step">
-                        <tr :key="'row' + i">
-                          <template v-if="i < output.nLine">
-                            <template v-for="(val, j) in row">
-                              <td class="border-l border-r px-4 py-2" :key="'td' + j + '-' + i">
-                                <div v-if = "j === 1">
-                                  x<sub>{{ val }}</sub>
-                                </div>
-                                <div v-else>
-                                  {{ val }}
-                                </div></td>
-                            </template>
-                          </template>
-                          <template v-else>
-                              <td class="border px-4 py-2"></td>
-                              <td class="border px-4 py-2"></td>
-                              <td class="border px-4 py-2"></td>
-                              <template v-for="(val, j) in row">
-                                <td class="border py-3" :key="'td_' + j + '-' + i">{{ val }}</td>
-                              </template>
-                          </template>
-                        </tr>
+      <div v-if="hasSubmitD1 && isHidden" class="grid grid-cols-1 gap-4 lg:col-span-2">
+        <div class="bg-white shadow-md p-5 whitespace-pre-line" v-html="outputPrint"></div>
+        <div class="bg-white shadow-md p-5">
+          <template v-if="output.answer.success">
+            <h1 class="text-lg font-semibold">Bài toán có lời giải</h1>
+            <hr class="my-4">
+            <p class="mb-3">Bảng đơn hình</p>
+            <div class="overflow-auto">
+              <table class="table-auto text-center w-full mb-5">
+                  <thead>
+                    <tr>
+                      <th class="border py-3">Hệ số C<sub>i</sub></th>
+                      <th class="border py-3">Ẩn cơ sở</th>
+                      <th class="border py-3">Phương án</th>
+                      <template v-for="x in output.nX">
+                        <th class="border px-4 py-2" :key="'th' + x">x<sub>{{ x }}</sub></th>
                       </template>
-                    </tbody>
-                </template>
-            </table>
-            <div>
-              <p class="mb-3 font-semibold">Bài toán có phương án tối ưu là:</p>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-                <p><span class="font-semibold">F(X*)</span> = {{ output.answer.result.fx }}</p>
-                <p><span class="font-semibold">X*</span> = ({{ output.answer.result.x.join(', ') }})</p>
+                    </tr>
+                  </thead>
+                  <template v-for="(step, index) in output.steps">
+                      <tbody :key="index" class="border">
+                        <template v-for="(row, i) in step">
+                          <tr :key="'row' + i">
+                            <template v-if="i < output.nLine">
+                              <template v-for="(val, j) in row">
+                                <td class="border-l border-r px-4 py-2" :key="'td' + j + '-' + i">
+                                  <div v-if = "j === 1">
+                                    x<sub>{{ val }}</sub>
+                                  </div>
+                                  <div v-else>
+                                    {{ val }}
+                                  </div></td>
+                              </template>
+                            </template>
+                            <template v-else>
+                                <td class="border px-4 py-2"></td>
+                                <td class="border px-4 py-2"></td>
+                                <td class="border px-4 py-2"></td>
+                                <template v-for="(val, j) in row">
+                                  <td class="border py-3" :key="'td_' + j + '-' + i">{{ val }}</td>
+                                </template>
+                            </template>
+                          </tr>
+                        </template>
+                      </tbody>
+                  </template>
+              </table>
+              <div>
+                <p class="mb-3 font-semibold">Bài toán có phương án tối ưu là:</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                  <p><span class="font-semibold">F(X*)</span> = {{ output.answer.result.fx }}</p>
+                  <p><span class="font-semibold">X*</span> = ({{ output.answer.result.x.join(', ') }})</p>
+                </div>
               </div>
             </div>
-          </div>
-        </template>
-        <template v-else>
-          <h1 class="text-lg font-semibold">Bài toán không có phương án tối ưu do tồn tại &Delta;<sub>k</sub> > 0, mà a<sub>ik</sub> &le; 0, &forall;i</h1>
-          <hr class="my-4">
-          <p class="mb-3">Bảng đơn hình</p>
-          <div class="overflow-auto">
-            <table class="table-auto text-center w-full mb-5">
-                <thead>
-                  <tr>
-                    <th class="border py-3">Hệ số C<sub>i</sub></th>
-                    <th class="border py-3">Ẩn cơ sở</th>
-                    <th class="border py-3">Phương án</th>
-                    <template v-for="x in output.nX">
-                      <th class="border px-4 py-2" :key="'th' + x">x<sub>{{ x }}</sub></th>
-                    </template>
-                  </tr>
-                </thead>
-                <template v-for="(step, index) in output.steps">
-                    <tbody :key="index" class="border">
-                      <template v-for="(row, i) in step">
-                        <tr :key="'row' + i">
-                          <template v-if="i < output.nLine">
-                            <template v-for="(val, j) in row">
-                              <td class="border-l border-r px-4 py-2" :key="'td' + j + '-' + i">
-                                <div v-if = "j === 1">
-                                  x<sub>{{ val }}</sub>
-                                </div>
-                                <div v-else>
-                                  {{ val }}
-                                </div></td>
-                            </template>
-                          </template>
-                          <template v-else>
-                              <td class="border px-4 py-2"></td>
-                              <td class="border px-4 py-2"></td>
-                              <td class="border px-4 py-2"></td>
-                              <template v-for="(val, j) in row">
-                                <td class="border-l border-r border py-3" :key="'td_' + j + '-' + i">{{ val }}</td>
-                              </template>
-                          </template>
-                        </tr>
+          </template>
+          <template v-else>
+            <h1 class="text-lg font-semibold">Bài toán không có phương án tối ưu do tồn tại &Delta;<sub>k</sub> > 0, mà a<sub>ik</sub> &le; 0, &forall;i</h1>
+            <hr class="my-4">
+            <p class="mb-3">Bảng đơn hình</p>
+            <div class="overflow-auto">
+              <table class="table-auto text-center w-full mb-5">
+                  <thead>
+                    <tr>
+                      <th class="border py-3">Hệ số C<sub>i</sub></th>
+                      <th class="border py-3">Ẩn cơ sở</th>
+                      <th class="border py-3">Phương án</th>
+                      <template v-for="x in output.nX">
+                        <th class="border px-4 py-2" :key="'th' + x">x<sub>{{ x }}</sub></th>
                       </template>
-                    </tbody>
-                  </template>
-                </table>
-              <div>
+                    </tr>
+                  </thead>
+                  <template v-for="(step, index) in output.steps">
+                      <tbody :key="index" class="border">
+                        <template v-for="(row, i) in step">
+                          <tr :key="'row' + i">
+                            <template v-if="i < output.nLine">
+                              <template v-for="(val, j) in row">
+                                <td class="border-l border-r px-4 py-2" :key="'td' + j + '-' + i">
+                                  <div v-if = "j === 1">
+                                    x<sub>{{ val }}</sub>
+                                  </div>
+                                  <div v-else>
+                                    {{ val }}
+                                  </div></td>
+                              </template>
+                            </template>
+                            <template v-else>
+                                <td class="border px-4 py-2"></td>
+                                <td class="border px-4 py-2"></td>
+                                <td class="border px-4 py-2"></td>
+                                <template v-for="(val, j) in row">
+                                  <td class="border-l border-r border py-3" :key="'td_' + j + '-' + i">{{ val }}</td>
+                                </template>
+                            </template>
+                          </tr>
+                        </template>
+                      </tbody>
+                    </template>
+                  </table>
+                <div>
+              </div>
             </div>
-          </div>
-        </template>
+          </template>
+        </div>
       </div>
     </div>
     <div class="text-center md:text-left">
