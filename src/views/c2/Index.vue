@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 class="text-2xl font-semibold text-center md:text-left">Chương 2:</h2>
+    <h2 class="text-2xl font-semibold text-center md:text-left">Chương 2</h2>
     <p class="text-gray-700 text-center md:text-left">Bài toán đối ngẫu</p>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 my-6">
       <div class="bg-white shadow-md p-5">
