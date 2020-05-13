@@ -27,10 +27,10 @@
           <textarea id="matrix" v-model="input.matrix" title="Ma trận" class="block appearance-none border border-gray-400 rounded w-full text-gray-700 py-2 px-3 focus:outline-none focus:border-blue-500 focus:shadow" rows="4"></textarea>
         </div>
         <div class="text-center md:text-left">
-          <button @click="submit" class="bg-blue-500 text-white hover:bg-blue-700 focus:outline-none focus:shadow-outline rounded px-5 py-2 mr-2">
+          <button @click="tayBac" class="bg-blue-500 text-white hover:bg-blue-700 focus:outline-none focus:shadow-outline rounded px-5 py-2 mr-2">
             Tây bắc
           </button>
-          <button @click="submit" class="bg-green-500 text-white hover:bg-blue-700 focus:outline-none focus:shadow-outline rounded px-5 py-2 mr-2">
+          <button @click="cucTieu" class="bg-green-500 text-white hover:bg-blue-700 focus:outline-none focus:shadow-outline rounded px-5 py-2 mr-2">
             Cực tiểu
           </button>
           <button @click="reset" class="bg-gray-500 text-white hover:bg-gray-600 focus:outline-none rounded px-4 py-2">
@@ -53,23 +53,30 @@
 </template>
 
 <script>
+import c3 from '@/core/c3'
+
 export default {
   name: 'C3Index',
   data () {
     return {
       input: {
-        phat: '',
-        thu: '',
-        matrix: ''
+        phat: '20 30 50',
+        thu: '10 50 40',
+        matrix: '4 1 6\n4 2 4\n7 3 6'
       },
       hasSubmit: false,
       isHidden: true,
-      output: ''
+      output: null
     }
   },
   methods: {
-    submit () {
-
+    tayBac () {
+      this.output = c3.tayBac(this.input.phat, this.input.thu, this.input.matrix)
+      // console.log(c3.tayBac(this.input.phat, this.input.thu, this.input.matrix))
+    },
+    cucTieu () {
+      this.output = c3.cucTieu(this.input.phat, this.input.thu, this.input.matrix)
+      // console.log(c3.tayBac(this.input.phat, this.input.thu, this.input.matrix))
     },
     reset () {
       this.input.phat = this.input.thu = this.input.matrix = ''
