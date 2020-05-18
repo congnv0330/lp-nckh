@@ -39,6 +39,51 @@
         </div>
       </div>
       <div v-if="hasSubmit" class="bg-white shadow-md p-5">
+        <h1 class="text-lg font-semibold mb-4">Bài toán có lời giải</h1>
+        <table class="table-fixed text-center w-full">
+          <tbody>
+            <tr>
+              <td class="border p-1">
+                <table class="w-full" style="background:linear-gradient(to top right,white 49%,#e2e8f0,white 51%)">
+                  <tbody>
+                    <tr>
+                      <td></td>
+                      <td>Thu</td>
+                    </tr>
+                    <tr>
+                      <td>Phát</td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+              <template v-for="t in output.thu">
+                <td :key="t * 2.1" class="border px-4 py-2">{{ t }}</td>
+              </template>
+            </tr>
+            <template v-for="(p, index) in output.phat">
+                <tr :key="p * 2.2">
+                  <td class="border px-4 py-2">{{ p }}</td>
+                  <template v-for="(i, idx) in output.cp[index]">
+                    <td :key="idx * p * 2.3" class="border">
+                      <table class="table-fixed w-full">
+                        <tbody>
+                          <tr>
+                            <td class="w-50">{{ i }}</td>
+                            <td class="w-50"></td>
+                          </tr>
+                          <tr>
+                            <td class="w-50"></td>
+                            <td class="border-t border-l w-50">{{ output.pp[index][idx] }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </template>
+                </tr>
+            </template>
+          </tbody>
+        </table>
       </div>
     </div>
     <div class="text-center md:text-left">
@@ -71,12 +116,14 @@ export default {
   },
   methods: {
     tayBac () {
+      this.hasSubmit = true
       this.output = c3.tayBac(this.input.phat, this.input.thu, this.input.matrix)
-      // console.log(c3.tayBac(this.input.phat, this.input.thu, this.input.matrix))
+      console.log(c3.tayBac(this.input.phat, this.input.thu, this.input.matrix))
     },
     cucTieu () {
+      this.hasSubmit = true
       this.output = c3.cucTieu(this.input.phat, this.input.thu, this.input.matrix)
-      // console.log(c3.tayBac(this.input.phat, this.input.thu, this.input.matrix))
+      console.log(c3.tayBac(this.input.phat, this.input.thu, this.input.matrix))
     },
     reset () {
       this.input.phat = this.input.thu = this.input.matrix = ''
