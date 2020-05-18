@@ -118,12 +118,12 @@ export default {
     tayBac () {
       this.hasSubmit = true
       this.output = c3.tayBac(this.input.phat, this.input.thu, this.input.matrix)
-      console.log(c3.tayBac(this.input.phat, this.input.thu, this.input.matrix))
+      // console.log(c3.tayBac(this.input.phat, this.input.thu, this.input.matrix))
     },
     cucTieu () {
       this.hasSubmit = true
       this.output = c3.cucTieu(this.input.phat, this.input.thu, this.input.matrix)
-      console.log(c3.tayBac(this.input.phat, this.input.thu, this.input.matrix))
+      // console.log(c3.tayBac(this.input.phat, this.input.thu, this.input.matrix))
     },
     reset () {
       this.input.phat = this.input.thu = this.input.matrix = ''
