@@ -4,7 +4,7 @@
       <router-view :key="$route.fullPath"/>
     </main>
     <footer class="text-center md:text-left py-5">
-      © 2020 NCH - NCKH, Linear programming
+      © {{ new Date().getFullYear() }} NCH - <router-link :to="{ name: 'about' }" class="hover:underline text-blue-600">NCKH</router-link>, Linear programming
     </footer>
   </div>
 </template>
