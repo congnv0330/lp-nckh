@@ -26,12 +26,12 @@ export default {
     return {
       members: [
         {
-          code: '44.01.104.061',
+          code: '44.01.104.060',
           name: 'Huỳnh Đức Cường',
           description: 'Trưởng nhóm, phát triển thuật toán'
         },
         {
-          code: '44.01.104.055',
+          code: '44.01.104.017',
           name: 'Trần Thanh Hùng',
           description: 'Thiết kế, phát triển thuật toán'
         },
