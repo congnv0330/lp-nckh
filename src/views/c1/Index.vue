@@ -166,9 +166,9 @@ export default {
   data () {
     return {
       input: {
-        fx: '1 2 0 1 -5',
-        matrix: '0 0 -3 -9 0 = 0\n0 1 -7 -5 -2 = 5\n3 -1 2 4 1 = 2',
-        fxRB: '1 2 3 4 5 >= 0',
+        fx: '',
+        matrix: '',
+        fxRB: '',
         type: 'min'
       },
       hasSubmit: false,
@@ -190,7 +190,7 @@ export default {
     reset () {
       this.input.fx = this.input.matrix = this.input.fxRB = ''
       this.input.type = 'min'
-      this.hasSubmit = false
+      // this.hasSubmit = false
     }
   }
 }

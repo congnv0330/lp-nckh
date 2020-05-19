@@ -105,9 +105,9 @@ export default {
   data () {
     return {
       input: {
-        phat: '20 30 50',
-        thu: '10 50 40',
-        matrix: '4 1 6\n4 2 4\n7 3 6'
+        phat: '',
+        thu: '',
+        matrix: ''
       },
       hasSubmit: false,
       isHidden: true,
@@ -116,14 +116,25 @@ export default {
   },
   methods: {
     tayBac () {
-      this.hasSubmit = true
-      this.output = c3.tayBac(this.input.phat, this.input.thu, this.input.matrix)
-      // console.log(c3.tayBac(this.input.phat, this.input.thu, this.input.matrix))
+      if (this.validate()) {
+        this.hasSubmit = true
+        this.output = c3.tayBac(this.input.phat, this.input.thu, this.input.matrix)
+      } else {
+        this.$toasted.show('Không đủ dữ kiện đầu vào!')
+        // console.log('Không đủ dữ kiện đầu vào!')
+      }
     },
     cucTieu () {
-      this.hasSubmit = true
-      this.output = c3.cucTieu(this.input.phat, this.input.thu, this.input.matrix)
-      // console.log(c3.tayBac(this.input.phat, this.input.thu, this.input.matrix))
+      if (this.validate()) {
+        this.hasSubmit = true
+        this.output = c3.cucTieu(this.input.phat, this.input.thu, this.input.matrix)
+      } else {
+        this.$toasted.show('Không đủ dữ kiện đầu vào!')
+        // console.log('Không đủ dữ kiện đầu vào!')
+      }
+    },
+    validate () {
+      return this.input.phat.trim() !== '' && this.input.thu.trim() !== '' && this.input.matrix.trim() !== ''
     },
     reset () {
       this.input.phat = this.input.thu = this.input.matrix = ''

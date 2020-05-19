@@ -184,6 +184,9 @@
       <router-link class="align-baseline font-bold text-sm text-gray-500 hover:text-gray-700 mr-5" :to="{ name: 'c1' }">
         &larr; Chương trước
       </router-link>
+      <router-link class="align-baseline font-bold text-sm text-gray-500 hover:text-gray-700 mr-5" :to="{ name: 'home' }">
+        Trang chủ
+      </router-link>
       <router-link class="align-baseline font-bold text-sm text-blue-500 hover:text-blue-700" :to="{ name: 'c3' }">
         Chương kế &rarr;
       </router-link>
@@ -201,12 +204,12 @@ export default {
   data () {
     return {
       input: {
-        fx: '6 4 -1 1 2',
-        matrix: '5 1 1 2 0 = 8\n2 -4 0 -1 1 = 6\n1 1 0 1 0 = 4',
-        fxRB: '1 2 3 4 5 >= 0',
+        fx: '',
+        matrix: '',
+        fxRB: '',
         type: 'min',
-        opitmalFx: '24',
-        opitmalX: '0 0 0 4 10'
+        opitmalFx: '',
+        opitmalX: ''
       },
       hasSubmitD2: false,
       hasSubmitD1: false,
