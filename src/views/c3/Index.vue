@@ -42,7 +42,7 @@
         <template v-if="output">
           <h1 class="text-lg font-semibold mb-4">Bài toán có lời giải</h1>
           <div class="overflow-auto">
-            <table class="table-fixed text-center w-full">
+            <table class="table-auto text-center w-full">
               <tbody>
                 <tr>
                   <td class="border p-1">
@@ -59,15 +59,15 @@
                       </tbody>
                     </table>
                   </td>
-                  <template v-for="t in output.thu">
-                    <td :key="t * 2.1" class="border px-4 py-2">{{ t }}</td>
+                  <template v-for="(t, index) in output.thu">
+                    <td :key="'tr_thu_' + index" class="border px-4 py-2">{{ t }}</td>
                   </template>
                 </tr>
                 <template v-for="(p, index) in output.phat">
-                    <tr :key="p * 2.2">
+                    <tr :key="'tr_phat_' + index">
                       <td class="border px-4 py-2">{{ p }}</td>
                       <template v-for="(i, idx) in output.cp[index]">
-                        <td :key="idx * p * 2.3" class="border">
+                        <td :key="'td_' + p + '_' + idx" class="border">
                           <table class="table-fixed w-full">
                             <tbody>
                               <tr>
