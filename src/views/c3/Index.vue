@@ -2,7 +2,7 @@
   <div>
     <h2 class="text-2xl font-semibold text-center md:text-left">Chương 3</h2>
     <p class="text-gray-700 text-center md:text-left">Bài toán vận tải</p>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 my-6">
       <div class="bg-white shadow-md p-5">
         <div class="flex mb-4">
           <label class="text-gray-700 font-bold my-auto mr-2" for="phat">
@@ -38,7 +38,7 @@
           </button>
         </div>
       </div>
-      <div v-if="hasSubmit" class="bg-white shadow-md p-5">
+      <div v-if="hasSubmit" class="bg-white lg:col-span-2 shadow-md p-5">
         <template v-if="output">
           <h1 class="text-lg font-semibold mb-4">Bài toán có lời giải</h1>
           <div class="overflow-auto">
