@@ -11,13 +11,15 @@ class LinearProgramming {
     this.yy = []
     this.pp = []
     this.kt = []
+    this.sumThu = 0
+    this.sumPhat = 0
   }
 }
 
 class Point {
-  constructor () {
-    this.x = 0
-    this.y = 0
+  constructor (x = 0, y = 0) {
+    this.x = x
+    this.y = y
   }
 }
 
@@ -30,18 +32,17 @@ function createInputMatrix (inputPhat, inputThu, inputMatrix) {
   orgin.nPhat = phatOrgin.length
   orgin.mThu = thuOrgin.length
 
-  let sumPhat = 0
-  let sumThu = 0
   for (let i = 0; i < orgin.nPhat; i++) {
     orgin.phat.push(parseInt(phatOrgin[i]))
-    sumPhat += parseInt(phatOrgin[i])
+    orgin.sumPhat += parseInt(phatOrgin[i])
   }
 
   for (let i = 0; i < orgin.mThu; i++) {
     orgin.thu.push(parseInt(thuOrgin[i]))
-    sumThu += parseInt(thuOrgin[i])
+    orgin.sumThu += parseInt(thuOrgin[i])
   }
 
+  let maxx = -999999999
   const matrixkt = inputMatrix.trim()
   const matrixArr = matrixkt.split('\n')
   for (let i = 0; i < matrixArr.length; i++) {
@@ -49,18 +50,19 @@ function createInputMatrix (inputPhat, inputThu, inputMatrix) {
     orgin.cp[i] = []
     for (let j = 0; j < line.length; j++) {
       orgin.cp[i][j] = parseInt(line[j])
+      maxx = Math.max(maxx, orgin.cp[i][j])
     }
   }
 
-  if (sumThu > sumPhat) {
-    orgin.nPhat += 1
-    phatOrgin[orgin.nPhat] = sumThu - sumPhat
+  if (orgin.sumThu > orgin.sumPhat) {
+    orgin.phat.push(orgin.sumThu - orgin.sumPhat)
     orgin.cp[orgin.nPhat] = []
-    for (let i = 0; i < orgin.mThu; i++) orgin.cp[orgin.nPhat][i] = Number.MAX_SAFE_INTEGER
-  } else if (sumPhat > sumThu) {
+    for (let i = 0; i < orgin.mThu; i++) orgin.cp[orgin.nPhat][i] = maxx + 1
+    orgin.nPhat += 1
+  } else if (orgin.sumPhat > orgin.sumThu) {
+    orgin.thu.push(orgin.sumPhat - orgin.sumThu)
+    for (let j = 0; j < orgin.nPhat; j++) orgin.cp[j][origin.mThu] = maxx + 1
     orgin.mThu += 1
-    thuOrgin[orgin.mThu] = sumPhat - sumThu
-    for (let j = 0; j < orgin.nPhat; j++) orgin.cp[j][origin.m] = Number.MAX_SAFE_INTEGER
   }
 
   for (let i = 0; i < orgin.nPhat; i++) orgin.xx[i] = orgin.phat[i]
@@ -100,7 +102,7 @@ function TayBac (orgin, i, j) {
 
 function findmin (orgin) {
   let min = Number.MAX_SAFE_INTEGER
-  const ms = new Point()
+  const ms = new Point(-1, -1)
 
   for (let i = 0; i < orgin.nPhat; i++) {
     for (let j = 0; j < orgin.mThu; j++) {
@@ -131,20 +133,31 @@ function minsheet (orgin, ij) {
     for (let k = 0; k < orgin.mThu; k++) orgin.kt[i][k] = 0
   }
   ij = findmin(orgin)
-  if (ij.x === 0 && ij.y === 0) return
+  if (ij.x === -1 && ij.y === -1) return
   else { minsheet(orgin, ij) }
   return orgin
+}
+
+function setDefault (vt) {
+  if (vt.sumThu > vt.sumPhat) {
+    for (let i = 0; i < vt.mThu; i++) vt.cp[vt.nPhat - 1][i] = 0
+  } else if (vt.sumThu < vt.sumPhat) {
+    for (let j = 0; j < vt.nPhat; j++) vt.cp[j][vt.mThu - 1] = 0
+  }
+  return vt
 }
 
 export default {
   tayBac (inputPhat, inputThu, inputMatrix) {
     let vt = createInputMatrix(inputPhat, inputThu, inputMatrix)
     vt = TayBac(vt, 0, 0)
+    vt = setDefault(vt)
     return vt
   },
   cucTieu (inputPhat, inputThu, inputMatrix) {
     let vt = createInputMatrix(inputPhat, inputThu, inputMatrix)
     vt = minsheet(vt, findmin(vt))
+    vt = setDefault(vt)
     return vt
   }
 }
