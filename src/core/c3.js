@@ -45,7 +45,7 @@ function createInputMatrix (inputPhat, inputThu, inputMatrix) {
   const matrixkt = inputMatrix.trim()
   const matrixArr = matrixkt.split('\n')
   for (let i = 0; i < matrixArr.length; i++) {
-    const line = matrixArr[i].split(' ')
+    const line = matrixArr[i].trim().split(' ')
     orgin.cp[i] = []
     for (let j = 0; j < line.length; j++) {
       orgin.cp[i][j] = parseInt(line[j])
