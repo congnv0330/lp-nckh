@@ -9,7 +9,7 @@
             Phát:
           </label>
           <div class="flex-1">
-            <input id="phat" type="text" v-model="input.phat" title="Phương trình F(x)" class="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-blue-500 focus:shadow">
+            <input id="phat" type="text" v-model="input.phat" placeholder="Thu ..." title="Tập thu" class="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-blue-500 focus:shadow">
           </div>
         </div>
         <div class="flex mb-4">
@@ -17,14 +17,14 @@
             Thu:
           </label>
           <div class="flex-1">
-            <input id="thu" type="text" v-model="input.thu" title="Phương trình F(x)" class="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-blue-500 focus:shadow">
+            <input id="thu" type="text" v-model="input.thu" placeholder="Phát ..." title="Tập phát" class="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-blue-500 focus:shadow">
           </div>
         </div>
         <div class="mb-4">
           <label class="block text-gray-700 font-bold mb-2" for="matrix">
             Ma trận chi phí:
           </label>
-          <textarea id="matrix" v-model="input.matrix" title="Ma trận" class="block appearance-none border border-gray-400 rounded w-full text-gray-700 py-2 px-3 focus:outline-none focus:border-blue-500 focus:shadow" rows="4"></textarea>
+          <textarea id="matrix" v-model="input.matrix" placeholder="Ma trận ..." title="Ma trận" class="block appearance-none border border-gray-400 rounded w-full text-gray-700 py-2 px-3 focus:outline-none focus:border-blue-500 focus:shadow" rows="4"></textarea>
         </div>
         <div class="text-center md:text-left">
           <button @click="tayBac" class="bg-blue-500 text-white hover:bg-blue-700 focus:outline-none focus:shadow-outline rounded px-5 py-2 mr-2">
