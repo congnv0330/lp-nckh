@@ -27,13 +27,13 @@
           <textarea id="matrix" v-model="input.matrix" placeholder="Ma trận ..." title="Ma trận" class="block appearance-none border border-gray-400 rounded w-full text-gray-700 py-2 px-3 focus:outline-none focus:border-blue-500 focus:shadow" rows="4"></textarea>
         </div>
         <div class="text-center md:text-left">
-          <button @click="tayBac" class="bg-blue-500 text-white hover:bg-blue-700 focus:outline-none focus:shadow-outline rounded px-5 py-2 mr-2">
+          <button @click="tayBac" id="btnTb" class="bg-blue-500 text-white hover:bg-blue-700 focus:outline-none focus:shadow-outline rounded px-5 py-2 mr-2">
             Tây bắc
           </button>
-          <button @click="cucTieu" class="bg-green-500 text-white hover:bg-blue-700 focus:outline-none focus:shadow-outline rounded px-5 py-2 mr-2">
+          <button @click="cucTieu" id="btnCt" class="bg-green-500 text-white hover:bg-blue-700 focus:outline-none focus:shadow-outline rounded px-5 py-2 mr-2">
             Cực tiểu
           </button>
-          <button @click="reset" class="bg-gray-500 text-white hover:bg-gray-600 focus:outline-none rounded px-4 py-2">
+          <button @click="reset" id="btnDel" class="bg-gray-500 text-white hover:bg-gray-600 focus:outline-none rounded px-4 py-2">
             Xóa
           </button>
         </div>
@@ -135,6 +135,7 @@ export default {
       if (this.validate()) {
         this.hasSubmit = true
         this.output = c3.cucTieu(this.input.phat, this.input.thu, this.input.matrix)
+        // console.log(c3.cucTieu(this.input.phat, this.input.thu, this.input.matrix))
       } else {
         this.$toasted.show('Không đủ dữ kiện đầu vào!')
         // console.log('Không đủ dữ kiện đầu vào!')
