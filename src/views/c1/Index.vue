@@ -12,7 +12,7 @@
             <input id="fx" type="text" v-model="input.fx" placeholder="Phương trình F(x) ..." title="Phương trình F(x)" class="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-blue-500 focus:shadow">
           </div>
           <div class="relative">
-            <select v-model="input.type" title="Bài toán" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-400 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:border-blue-500 focus:shadow">
+            <select v-model="input.type" title="Bài toán" id="cbValue" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-400 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:border-blue-500 focus:shadow">
               <option value="min">Min</option>
               <option value="max">Max</option>
             </select>
@@ -21,9 +21,9 @@
             </div>
           </div>
         </div>
-        <textarea v-model="input.matrix" placeholder="Ma trận ..." title="Ma trận" class="block appearance-none border border-gray-400 rounded w-full text-gray-700 py-2 px-3 focus:outline-none focus:border-blue-500 focus:shadow mb-4" rows="4"></textarea>
+        <textarea v-model="input.matrix" placeholder="Ma trận ..." title="Ma trận" id="matriX" class="block appearance-none border border-gray-400 rounded w-full text-gray-700 py-2 px-3 focus:outline-none focus:border-blue-500 focus:shadow mb-4" rows="4"></textarea>
         <div class="flex mb-4">
-          <label class="text-gray-700 font-bold my-auto mr-2" for="fxRB">
+          <label id="rangBuoc" class="text-gray-700 font-bold my-auto mr-2" for="fxRB">
             Rằng buộc
           </label>
           <div class="flex-1">
@@ -31,10 +31,10 @@
           </div>
         </div>
         <div class="text-center md:text-left">
-          <button @click="submit" class="bg-blue-500 text-white hover:bg-blue-700 focus:outline-none focus:shadow-outline rounded px-5 py-2 mr-2">
+          <button @click="submit" id="btnCalc" class="bg-blue-500 text-white hover:bg-blue-700 focus:outline-none focus:shadow-outline rounded px-5 py-2 mr-2">
             Thực hiện
           </button>
-          <button @click="reset" class="bg-gray-500 text-white hover:bg-gray-600 focus:outline-none rounded px-4 py-2">
+          <button @click="reset" id="btnDel" class="bg-gray-500 text-white hover:bg-gray-600 focus:outline-none rounded px-4 py-2">
             Xóa
           </button>
         </div>
