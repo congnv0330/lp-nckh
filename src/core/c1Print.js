@@ -127,6 +127,7 @@ function setMatrix (lp) {
     for (let i = 0; i < rb.n; i++) {
       rb.fx[i].tu *= -1
     }
+    rb.type = 'min'
   }
 
   for (let i = 0; i < rb.n; i++) {
